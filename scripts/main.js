@@ -1,3 +1,5 @@
-import { initHeader } from './header.js';
+import Header from './header.js';
+import TabsCollection from './Tabs.js';
 
-initHeader();
+new Header();
+new TabsCollection();

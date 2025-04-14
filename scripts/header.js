@@ -1,4 +1,4 @@
-export class Header {
+class Header {
   selectors = {
     root: '[data-js-header]',
     overlay: '[data-js-header-overlay]',
@@ -27,3 +27,5 @@ export class Header {
     this.burgerButtonElement.addEventListener('click', this.onBurgerButtonClick);
   }
 }
+
+export default Header;
