@@ -90,6 +90,9 @@
     justify-content: start;
     row-gap: fluid(20, 4);
 
+    /**
+      элемент имеет только одного ребенка
+    */
     &:has(> *:only-child) {
       justify-content: center;
     }
@@ -105,6 +108,9 @@
     }
 
     &--wide {
+      /**
+        на всю ширину
+      */
       grid-column: -1 / 1;
     }
 
