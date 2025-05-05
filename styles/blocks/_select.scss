@@ -1,23 +1,9 @@
-@use '../helpers/' as *;
+@use '../helpers' as *;
 
 .select {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  column-gap: rem(6);
-  transition-duration: var(--transition-duration);
-
-  @include laptop {
-    column-gap: rem(4);
-  }
-
-  &.is-expanded {
-    &::after {
-      rotate: -180deg;
-    }
-  }
-
   &__original-control {
+    min-width: rem(100);
+
     @include mobile-above {
       @include visually-hidden;
     }
@@ -42,6 +28,22 @@
   }
 
   &__button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: rem(6);
+    transition-duration: var(--transition-duration);
+
+    @include laptop {
+      column-gap: rem(4);
+    }
+
+    &.is-expanded {
+      &::after {
+        rotate: -180deg;
+      }
+    }
+
     &::after {
       --size: #{rem(24)};
 
@@ -96,7 +98,7 @@
     column-gap: rem(10);
     padding: rem(10);
     border: var(--border);
-    border-radius: initial;
+    border-radius: inherit;
 
     @include hover {
       color: var(--color-accent);

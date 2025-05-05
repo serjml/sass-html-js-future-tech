@@ -89,6 +89,18 @@ class Select extends BaseComponent {
     updateOptions();
   }
 
+  toggleExpandedState() {
+    this.state.isExpanded = !this.state.isExpanded;
+  }
+
+  expand() {
+    this.state.isExpanded = true;
+  }
+
+  collapse() {
+    this.state.isExpanded = false;
+  }
+
   fixDropdownPosition() {
     const viewportWidth = document.documentElement.clientWidth;
     const halfViewportWidth = viewportWidth / 2;
@@ -115,12 +127,40 @@ class Select extends BaseComponent {
     this.buttonElement.tabIndex = isMobileDevice ? -1 : 0;
   }
 
+  onButtonClick = () => {
+    this.toggleExpandedState();
+  };
+
   onMobileMatchMediaChange = (event) => {
     this.updateTabIndexes(event.matches);
   };
 
+  onClick = (event) => {
+    const { target } = event;
+
+    const isButtonClisk = target === this.buttonElement;
+    const isOutsideDropdownClick = target.closest(this.selectors.dropdown) !== this.dropdownElement;
+
+    if (!isButtonClisk && isOutsideDropdownClick) {
+      this.collapse();
+      return;
+    }
+
+    const isOptionClick = target.matches(this.selectors.option);
+
+    if (isOptionClick) {
+      this.state.selectedOptionElement = target;
+      this.state.currentOptionIndex = [...this.optionElements].findIndex(
+        (optionElement) => optionElement === target,
+      );
+      this.collapse();
+    }
+  };
+
   bindEvents() {
     MatchMedia.mobile.addEventListener('change', this.onMobileMatchMediaChange);
+    this.buttonElement.addEventListener('click', this.onButtonClick);
+    document.addEventListener('click', this.onClick);
   }
 }
 
