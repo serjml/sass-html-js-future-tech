@@ -923,6 +923,7 @@ button[aria-label]::before {
 .metrics__item {
   display: flex;
   flex-direction: column-reverse;
+  justify-content: start;
   row-gap: 0.625rem;
   padding: 3.125rem;
 }
@@ -2447,6 +2448,9 @@ button[aria-label]::before {
 }
 .field__control::placeholder {
   color: var(--color-dark-40);
+}
+.field__control:user-invalid {
+  border-color: var(--color-red);
 }
 .field__body {
   display: flex;
