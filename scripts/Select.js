@@ -127,6 +127,16 @@ class Select extends BaseComponent {
     this.buttonElement.tabIndex = isMobileDevice ? -1 : 0;
   }
 
+  get isNeedToExpand() {
+    const isButtonFocused = document.activeElement === this.buttonElement;
+
+    return !this.state.isExpanded && isButtonFocused;
+  }
+
+  selectCurrentOption() {
+    this.state.selectedOptionElement = this.optionElements[this.state.currentOptionIndex];
+  }
+
   onButtonClick = () => {
     this.toggleExpandedState();
   };
@@ -157,10 +167,75 @@ class Select extends BaseComponent {
     }
   };
 
+  onArrowUpKeyDown = () => {
+    if (this.isNeedToExpand) {
+      this.expand();
+      return;
+    }
+
+    if (this.state.currentOptionIndex > 0) {
+      this.state.currentOptionIndex--;
+    }
+  };
+
+  onArrowDownKeyDown = () => {
+    if (this.isNeedToExpand) {
+      this.expand();
+      return;
+    }
+
+    if (this.state.currentOptionIndex < this.optionElements.length - 1) {
+      this.state.currentOptionIndex++;
+    }
+  };
+
+  onSpaceKeyDown = () => {
+    if (this.isNeedToExpand) {
+      this.expand();
+      return;
+    }
+
+    this.selectCurrentOption();
+    this.collapse();
+  };
+
+  onEnterKeyDown = () => {
+    if (this.isNeedToExpand) {
+      this.expand();
+      return;
+    }
+
+    this.selectCurrentOption();
+    this.collapse();
+  };
+
+  onKeyDown = (event) => {
+    const { code } = event;
+
+    const action = {
+      ArrowUp: this.onArrowUpKeyDown,
+      ArrowDown: this.onArrowDownKeyDown,
+      Space: this.onSpaceKeyDown,
+      Enter: this.onEnterKeyDown,
+    }[code];
+
+    if (action) {
+      event.preventDefault();
+      action();
+    }
+  };
+
+  onOriginalControlChange = () => {
+    this.state.selectedOptionElement =
+      this.optionElments[this.originalControlElement.selectedIndex];
+  };
+
   bindEvents() {
     MatchMedia.mobile.addEventListener('change', this.onMobileMatchMediaChange);
     this.buttonElement.addEventListener('click', this.onButtonClick);
     document.addEventListener('click', this.onClick);
+    this.rootElement.addEventListener('keydown', this.onKeyDown);
+    this.originalControlElement.addEventListener('change', this.onOriginalControlChange);
   }
 }
 
